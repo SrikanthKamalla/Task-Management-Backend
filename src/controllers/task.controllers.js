@@ -19,7 +19,6 @@ export const createTask = async (req, res) => {
 
 // Get all tasks for a user with optional search
 export const getTasks = async (req, res) => {
-  console.log("object");
   try {
     const {
       search = "",
@@ -29,7 +28,6 @@ export const getTasks = async (req, res) => {
       limit = 10,
     } = req.query;
 
-    console.log({ search, status, priority, page, limit });
     const filter = { user: req.user.id };
     if (search) filter.title = { $regex: search, $options: "i" };
     if (status) filter.status = status;
@@ -44,8 +42,6 @@ export const getTasks = async (req, res) => {
       .limit(limitNumber)
       .sort({ createdAt: -1 });
     const total = await Task.countDocuments(filter);
-    // console.log(total);
-    // console.log(tasks);
 
     sendResponse(res, "Tasks fetched successfully", 200, {
       tasks,
@@ -57,7 +53,6 @@ export const getTasks = async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(err.message);
     sendResponse(res, err.message, 500, null);
   }
 };

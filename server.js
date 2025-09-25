@@ -11,7 +11,7 @@ import errorHandler from "./src/middlewares/errorHandler.js";
 const app = express();
 const PORT = process.env.PORT || 8000;
 
-connectDB().then(() => console.log("✅ MongoDB Connected Successfully"));
+connectDB();
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -26,7 +26,7 @@ app.use(
 
 const limiter = rateLimit({
   windowMs: 60 * 60 * 1000,
-  max: 10000,
+  max: 1000,
   message: "Too many requests, please try again later.",
 });
 
@@ -38,6 +38,4 @@ app.use("/api", limiter, routes);
 
 app.use(errorHandler);
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on http://localhost:${PORT}`);
-});
+app.listen(PORT, () => {});
